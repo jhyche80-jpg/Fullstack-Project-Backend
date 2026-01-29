@@ -4,12 +4,15 @@ const app = express()
 
 const connectDB = require('./src/config/connection')
 // import routers
+const authRouter = require('./src/routes/authRouter')
+const projectRouter = require('./src/routes/projectRouter')
 
 // middle ware 
 
 
 // router calling 
-
+app.use('/auth', authRouter)
+app.use('/project', projectRouter)
 
 // start server 
 
