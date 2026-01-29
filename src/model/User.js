@@ -23,7 +23,8 @@ const userSchema = new Schema({
         required: [true, "Enter email"],
         lowercase: true,
         trim: true,
-        match: /.+@.+\..+/
+        match: /.+@.+\..+/,
+        unique: true
     },
     birthDate: {
         type: Date,
@@ -54,23 +55,19 @@ const userSchema = new Schema({
         type: String,
         select: false
     },
-    role: {
-        enum: ['owner', 'joint'],
-        default: 'owner',
-        required: true
-    }
+
 })
 
 //  hashpassword
 
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next()
+userSchema.pre('save', async function () {
+    if (!this.isModified('password')) return
     this.password = await bcrypt.hash(this.password, 10)
-    next()
+
 })
 
 userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password)
 }
 
-model.exports = model('User', userSchema)
+module.exports = model('User', userSchema)

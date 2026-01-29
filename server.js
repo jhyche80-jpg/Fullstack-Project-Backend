@@ -8,7 +8,8 @@ const authRouter = require('./src/routes/authRouter')
 const projectRouter = require('./src/routes/projectRouter')
 
 // middle ware 
-
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // router calling 
 app.use('/auth', authRouter)
