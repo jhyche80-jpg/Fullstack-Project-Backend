@@ -1,7 +1,8 @@
+
+
 const { Schema, model } = require('mongoose')
 
-const projectSchema = new Schema({
-
+const taskSchema = new Schema({
     title: {
         type: String,
         required: [true, 'Please enter a title']
@@ -10,7 +11,6 @@ const projectSchema = new Schema({
         type: Date,
         validate: [{
             validator: function (dueDate) {
-
                 return dueDate < new Date()
             },
             message: ' Invalid date entered!'
@@ -19,11 +19,10 @@ const projectSchema = new Schema({
     },
     description: {
         type: String,
-        min: 15
     },
-    user: {
+    project: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Project',
         required: true,
         index: true
     },
@@ -34,7 +33,11 @@ const projectSchema = new Schema({
     category: {
         enum: ['fitness', 'personal', 'financial', "school"],
         required: true,
+    },
+    priority: {
+        enum: ['low', 'medium', 'high'],
+        required: [true, 'how  important is this task'],
     }
 })
 
-module.exports = model('Project', projectSchema)
+module.exports = model('Task', taskSchema)
