@@ -121,16 +121,23 @@ A: Check input format and length
 ### Problems
 List specific problems you faced.
 
-1.  
-2.  
-3.  
+1.  I am getting a type error for my server.js:
+    - TypeError('argument handler must be a function')
+    - Referncing the router 
+    - Looks like the router didnt get imported correctly 
+    - Routes are correct
+    
+2.  Creating a project under a specific name
+    - I am not connecting the task to the user
+3.  The put request is not working
+    - it kept saying " User not found or you are not authorized
 
 ### Solutions
 Explain how you solved each problem.
 
-1.  
-2.  
-3.  
+1.  I first tested if the route was somehow flawed byt importing the rout directly into the `app.use()` area. After that I looked at each of the my routers and seen that I didn't export my routes.
+2.   I wasnt calling task
+3.  In the code I was not using the specific param name. 
 
 ---
 

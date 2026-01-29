@@ -11,11 +11,16 @@ const taskSchema = new Schema({
         type: Date,
         validate: [{
             validator: function (dueDate) {
-                return dueDate < new Date()
+                // allow due dates today or later
+                return !dueDate || dueDate >= new Date();
             },
-            message: ' Invalid date entered!'
-        }
-        ]
+            message: "Invalid date entered! Due date must be today or later."
+        }]
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
     description: {
         type: String,
@@ -27,16 +32,14 @@ const taskSchema = new Schema({
         index: true
     },
     status: {
+        type: String,
         enum: ['in-progress', 'completed', 'notStarted'],
-        required: true,
-    },
-    category: {
-        enum: ['fitness', 'personal', 'financial', "school"],
-        required: true,
+        default: 'notStarted'
+
     },
     priority: {
+        type: String,
         enum: ['low', 'medium', 'high'],
-        required: [true, 'how  important is this task'],
     }
 })
 

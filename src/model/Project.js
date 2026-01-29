@@ -24,16 +24,13 @@ const projectSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        required: [true, ' User needed!'],
         index: true
     },
     status: {
+        type: String,
         enum: ['in-progress', 'completed', 'notStarted'],
-        required: true,
-    },
-    category: {
-        enum: ['fitness', 'personal', 'financial', "school"],
-        required: true,
+        default: 'notStarted'
     }
 })
 

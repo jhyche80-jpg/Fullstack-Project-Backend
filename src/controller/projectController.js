@@ -1,16 +1,25 @@
 const Project = require('../model/Project')
 const mongoose = require('mongoose')
+const Task = require('../model/Task')
+
 async function createProject(req, res) {
     try {
-        const { title, dueDate, description, status, category } = req.body
-        if (!title || !description || !status || !category) {
-            return res.status(409).json({ message: 'Please fill out all fields' })
+        const { title, dueDate, description, status } = req.body;
+
+        if (!title || !description || !status) {
+            return res.status(400).json({ message: 'Please fill out all required fields' });
         }
-        req.body.user = req.user._id
-        const newProject = await Project.create(req.body)
-        res.json(newProject)
+
+        const projectData = { ...req.body, user: req.user._id };
+        if (dueDate) projectData.dueDate = dueDate;
+
+        const newProject = await Project.create(projectData);
+        res.status(201).json({
+            message: 'Project created successfully',
+            newProject
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating product', details: error.message })
+        res.status(500).json({ message: 'Error creating project', details: error.message });
     }
 }
 
@@ -19,7 +28,15 @@ async function deleteProject(req, res) {
         const project = await Project.findOneAndDelete({
             _id: req.params.id,
             user: req.user._id
-        })
+        });
+        if (!project) {
+            return res.status(404).json({ success: false, message: "Project not found or unauthorized" });
+        }
+
+        // Cascade delete tasks
+        await Task.deleteMany({ project: project._id });
+
+        res.status(200).json({ success: true, message: "Project and related tasks deleted" });
         if (!project) return res.status(404).json({ message: "Project does not exist or Unauthorized to access project" })
     } catch (error) {
         res.status(500).json(error)
@@ -28,7 +45,7 @@ async function deleteProject(req, res) {
 
 async function updateProject(req, res) {
     try {
-        const project = await Project.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, req.body, { new: true, runValidators: true })
+        const project = await Project.findOneAndUpdate({ _id: req.params.projectId, user: req.user._id }, req.body, { new: true, runValidators: true })
         if (!project) {
             return res.status(404).json({ message: " Project is not found or you are not authorized to do this" })
         }
@@ -38,26 +55,6 @@ async function updateProject(req, res) {
     }
 }
 
-async function getProject(req, res) {
-    try {
-        if (!req.user || !req.user._id) {
-            return res.status(401).json({ message: 'Unauthorized' })
-        }
-        const { id } = req.params
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid project Id' })
-        }
-        const project = await Project.findOne({ _id: id, user: req.user._id })
-        if (!project) {
-            return res.status(404).json({ message: 'Project is not found' })
-        }
-        res.json(project)
-
-    } catch (error) {
-        res.status(500).json({ message: 'Project not found' })
-    }
-}
 
 //get all  
 async function getProjects(req, res) {
@@ -76,4 +73,4 @@ async function getProjects(req, res) {
 
 
 
-module.exports = { createProject, deleteProject, updateProject, getProject, getProjects }
+module.exports = { createProject, deleteProject, updateProject, getProjects }

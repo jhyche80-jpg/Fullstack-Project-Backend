@@ -1,16 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const taskRouter = require('./taskRouter')
+const authMiddleware = require('../utils/authMiddleware')
 
 const { createProject, deleteProject, updateProject, getProject, getProjects } = require('../controller/projectController')
-router.use('/', taskRouter)
+
 // find all
-router.get('/', getProjects)
-//find one 
-router.get('/:projectId', getProject)
+router.get('/', authMiddleware, getProjects)
 // update
-router.put('/:projectId', updateProject)
+router.put('/:projectId', authMiddleware, updateProject)
 // delete 
-router.delete('/:projectId', deleteProject)
+router.delete('/:projectId', authMiddleware, deleteProject)
 //create 
-router.post('/', createProject)
+router.post('/', authMiddleware, createProject)
+
+module.exports = router 
