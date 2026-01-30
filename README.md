@@ -142,22 +142,21 @@ Explain how you solved each problem.
 ---
 
 ## Reflection
-Reflect on what you learned, what worked well, and what you would do differently.  
-Include lessons about problem solving and debugging.
+I ran into many problems of this code and it taught me to look around mote when coding espicially double checking your code for typos. 
 
 ---
 
 ## References
 
-### Programs Used
-Example:  
+### Programs Used  
 - VS Code  
-- Node  
+- Node.js   
 - React  
 - Postman  
+- Helmet
+
 
 ### Websites Used
-Example:  
 - MDN  
 - Stack Overflow  
 - W3Schools  

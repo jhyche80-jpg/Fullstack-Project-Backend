@@ -7,8 +7,13 @@ const connectDB = require('./src/config/connection')
 const authRouter = require('./src/routes/authRouter')
 const projectRouter = require('./src/routes/projectRouter')
 const taskRouter = require('./src/routes/taskRouter')
+const cors = require("cors")
 
 // middle ware 
+app.use(cors({
+    origin: process.env.CLIENT_URL, // frontend origin
+    credentials: true,               // needed if sending cookies/JWT
+}));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
