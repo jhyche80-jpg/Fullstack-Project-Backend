@@ -13,7 +13,7 @@ async function authMiddleware(req, res, next) {
         const user = await User.findById(decoded.id);
         if (!user) return res.status(401).json({ message: 'Unauthorized: User not found' });
 
-        req.user = user; // ✅ important
+        req.user = user;
         next();
     } catch (err) {
         res.status(401).json({ message: 'Unauthorized: Invalid token', error: err.message });
