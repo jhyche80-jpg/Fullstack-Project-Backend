@@ -26,7 +26,7 @@ async function createProject(req, res) {
 async function deleteProject(req, res) {
     try {
         const project = await Project.findOneAndDelete({
-            _id: req.params.id,
+            _id: req.params.projectId,
             user: req.user._id
         });
         if (!project) {

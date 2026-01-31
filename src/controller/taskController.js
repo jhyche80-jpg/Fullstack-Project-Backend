@@ -37,14 +37,14 @@ async function deleteTask(req, res) {
         const task = await Task.findOneAndDelete(
             {
                 _id: taskId,
-                project: projectId
+                project: projectId,
+                user: req.user._id
             }
-
         )
         if (!task) return res.status(400).json({ message: 'Task not found for this project' })
         res.json({ message: "Deleted", succes: true })
     } catch (error) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: error.message });
     }
 }
 async function updateTask(req, res) {
@@ -53,7 +53,8 @@ async function updateTask(req, res) {
 
         const task = await Task.findOneAndUpdate({
             _id: taskId,
-            project: projectId
+            project: projectId,
+            user: req.user._id
         },
             req.body,
             { new: true, runValidators: true }
@@ -71,15 +72,24 @@ async function updateTask(req, res) {
 
 async function getTasks(req, res) {
     try {
-        const filter = {}
-        if (req.query.projectId) filter.project = req.query.projectId
-        const task = await Task.find(filter)
+        const { projectId } = req.params;
+
+        const tasks = await Task.find({
+            project: projectId,
+            user: req.user._id
+        })
             .populate('user', 'username email')
-            .populate('project', 'name description')
-        res.status(200).json({ success: true, task })
+            .populate('project', 'title description');
+
+        res.status(200).json({ success: true, tasks });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Error fetching tasks', details: error.message })
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching tasks',
+            details: error.message
+        });
     }
 }
+
 
 module.exports = { createTask, deleteTask, updateTask, getTasks }
