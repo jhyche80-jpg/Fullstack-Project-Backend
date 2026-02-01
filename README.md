@@ -142,7 +142,7 @@ Explain how you solved each problem.
 ---
 
 ## Reflection
-I ran into many problems of this code and it taught me to look around mote when coding espicially double checking your code for typos. 
+Seen on the front-end  version on github (linked at the top of the page)
 
 ---
 
@@ -151,9 +151,10 @@ I ran into many problems of this code and it taught me to look around mote when 
 ### Programs Used  
 - VS Code  
 - Node.js   
-- React  
 - Postman  
 - Helmet
+- cors 
+
 
 
 ### Websites Used

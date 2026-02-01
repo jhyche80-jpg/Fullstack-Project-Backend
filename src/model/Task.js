@@ -11,8 +11,15 @@ const taskSchema = new Schema({
         type: Date,
         validate: [{
             validator: function (dueDate) {
-                // allow due dates today or later
-                return !dueDate || dueDate >= new Date();
+                if (!dueDate) return true
+
+                const today = new Date()
+                today.setHours(0, 0, 0, 0)
+
+                const inputDate = new Date(dueDate)
+                inputDate.setHours(0, 0, 0, 0)
+
+                return inputDate >= today
             },
             message: "Invalid date entered! Due date must be today or later."
         }]
@@ -40,6 +47,7 @@ const taskSchema = new Schema({
     priority: {
         type: String,
         enum: ['low', 'medium', 'high'],
+        require: true
     }
 })
 

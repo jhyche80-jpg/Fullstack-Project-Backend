@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const authMiddleware = require('../utils/authMiddleware')
 
-const { createProject, deleteProject, updateProject, getProject, getProjects } = require('../controller/projectController')
+const { createProject, deleteProject, updateProject, getProjects } = require('../controller/projectController')
 
 // find all
 router.get('/', authMiddleware, getProjects)

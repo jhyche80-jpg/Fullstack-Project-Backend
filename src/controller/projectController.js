@@ -3,6 +3,7 @@ const Task = require('../model/Task')
 
 async function createProject(req, res) {
     try {
+        // pull from req body 
         const { title, dueDate, description, status } = req.body;
 
         if (!title || !description || !status) {
@@ -43,8 +44,10 @@ async function deleteProject(req, res) {
 
 async function updateProject(req, res) {
     try {
-        const project = await Project.findOneAndUpdate({ _id: req.params.projectId, user: req.user._id },
-            req.body, { new: true, runValidators: true })
+        const project = await Project.findOneAndUpdate(
+            { _id: req.params.projectId, user: req.user._id },
+            req.body,
+            { new: true, runValidators: true })
         if (!project) {
             return res.status(404).json({ message: " Project is not found" })
         }
