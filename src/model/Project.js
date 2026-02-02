@@ -8,14 +8,7 @@ const projectSchema = new Schema({
     },
     dueDate: {
         type: Date,
-        validate: [{
-            validator: function (dueDate) {
 
-                return dueDate < new Date()
-            },
-            message: ' Invalid date entered!'
-        }
-        ]
     },
     description: {
         type: String,
